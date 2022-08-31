@@ -1,4 +1,5 @@
 import axios from "axios";
+import decodeJwt from "jwt-decode";
 
 const authProvider = {
   login: ({ username, password }) => {
@@ -7,38 +8,54 @@ const authProvider = {
       body: JSON.stringify({ email: username, password: password }),
       headers: new Headers({ "Content-Type": "application/json" }),
     });
-    return fetch(request)
-      .then((response) => {
-        if (response.status < 200 || response.status >= 300) {
-          throw new Error(response.statusText);
-        }
-        console.log("1111", response.status, response.json());
-        //return response.json();
-        localStorage.setItem("username", username);
-        return Promise.resolve();
-      })
-      .then((auth) => {
-        localStorage.setItem("username", username);
-        localStorage.setItem("auth", JSON.stringify(auth));
-      })
-      .catch(() => {
-        console.log("3333");
-        throw new Error("Network error");
-      });
+    return (
+      fetch(request)
+        .then((response) => {
+          if (response.status < 200 || response.status >= 300) {
+            throw new Error(response.statusText);
+          }
+          //console.log("1111", response.status, response.json());
+
+          console.log("res.json", response.data);
+          //const decodedToken = decodeJwt(token);
+          //return response.json();
+          //localStorage.setItem("username", username);
+          return Promise.resolve(response);
+        })
+        //.then((auth) => {
+        .then((username) => {
+          localStorage.setItem("username", username);
+          // localStorage.setItem("auth", {
+          //   id: username,
+          //   fullName: username,
+          //   avatar: username,
+          // });
+        })
+        .catch(() => {
+          throw new Error("Network error");
+        })
+    );
   },
   logout: () => {
     localStorage.removeItem("username");
     return Promise.resolve();
+    //return Promise.resolve('/my-custom-login');
   },
   checkAuth: () =>
     localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
+  //localStorage.getItem("auth") ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' }),
+  //localStorage.getItem("auth") ? Promise.resolve() : Promise.reject({ message: false }),
   checkError: (error) => {
     const status = error.status;
+    console.log("checkError", status);
     if (status === 401 || status === 403) {
       localStorage.removeItem("username");
+      //localStorage.removeItem("auth");
       return Promise.reject();
+      //return Promise.reject({ message: 'Unauthorized user!' }); // 알림 사용자 지정
+      //return Promise.reject({ redirectTo: "/401page" }); //리다이렉션 재정의
+      //return Promise.reject({ redirectTo: '/unauthorized', logoutUser: false });//로그아웃 안하고 리다이렉션
     }
-    // other error code (404, 500, etc): no need to log out
     return Promise.resolve();
   },
   getIdentity: () =>
@@ -46,6 +63,14 @@ const authProvider = {
       id: "user",
       fullName: "John Doe",
     }),
+  // getIdentity: () => {
+  //   try {
+  //     const { id, fullName, avatar } = JSON.parse(localStorage.getItem("auth"));
+  //     return Promise.resolve({ id, fullName, avatar });
+  //   } catch (error) {
+  //     return Promise.reject(error);
+  //   }
+  // },
   getPermissions: () => Promise.resolve(""),
 };
 

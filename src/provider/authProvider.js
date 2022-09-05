@@ -1,8 +1,27 @@
-import axios from "axios";
-import decodeJwt from "jwt-decode";
+// import axios from "axios";
+// import decodeJwt from "jwt-decode";
+import React, { useState, useEffect, useCallback } from "react";
+import * as authAction from "./auth-action";
+// let logoutTimer;
+// const tokenData = authAction.retrieveStoredToken();
+// let initialToken;
+// if (tokenData) {
+//   console.log("tokenData", tokenData);
+//   initialToken = tokenData.token;
+// }
+
+// const [token, setToken] = useState(initialToken);
+
+// const logoutHandler = useCallback(() => {
+//   setToken("");
+//   authAction.logoutActionHandler();
+//   if (logoutTimer) {
+//     clearTimeout(logoutTimer);
+//   }
+// }, []);
 
 const authProvider = {
-  login: ({ username, password }) => {
+  /* login: ({ username, password }) => {
     const request = new Request("http://localhost:8080/auth/login", {
       method: "POST",
       body: JSON.stringify({ email: username, password: password }),
@@ -34,7 +53,28 @@ const authProvider = {
         .catch(() => {
           throw new Error("Network error");
         })
-    );
+    ); 
+  }*/
+  login: ({ username, password }) => {
+    const data = authAction.loginActionHandler(username, password);
+    data.then((result) => {
+      if (result !== null) {
+        const loginData = result.data;
+        // setToken(loginData.accessToken);
+        // logoutTimer = setTimeout(
+        //   logoutHandler,
+        //   authAction.loginTokenHandler(
+        //     loginData.accessToken,
+        //     loginData.tokenExpiresIn
+        //   )
+        // );
+        console.log("loginData.accessToken : " + loginData.accessToken);
+        localStorage.setItem("token", loginData.accessToken);
+      }
+    });
+
+    localStorage.setItem("username", username);
+    return Promise.resolve();
   },
   logout: () => {
     localStorage.removeItem("username");

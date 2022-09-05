@@ -14,7 +14,10 @@ const AuthContext = React.createContext({
   changeNickname: (nickname) => {},
   changePassword: (exPassword, newPassword) => {},
 });
+
+// Context의 변화를 알리는 Provider 컴포넌트를 반환
 export const AuthContextProvider = (props) => {
+  //토큰확인 함수
   const tokenData = authAction.retrieveStoredToken();
   let initialToken;
   if (tokenData) {
@@ -27,7 +30,10 @@ export const AuthContextProvider = (props) => {
   });
   const [isSuccess, setIsSuccess] = useState(false);
   const [isGetSuccess, setIsGetSuccess] = useState(false);
+  //boolean값, 토큰의 존재여부에 따라 변환
   const userIsLoggedIn = !!token;
+
+  //회원가입
   const signupHandler = (email, password, nickname) => {
     setIsSuccess(false);
     const response = authAction.signupActionHandler(email, password, nickname);
@@ -37,9 +43,12 @@ export const AuthContextProvider = (props) => {
       }
     });
   };
+
+  //로그인
   const loginHandler = (email, password) => {
     setIsSuccess(false);
     console.log(isSuccess);
+    //토큰추출후 전역토큰 설정 -> 만료시간후 로그아웃 실행
     const data = authAction.loginActionHandler(email, password);
     data.then((result) => {
       if (result !== null) {
@@ -57,6 +66,8 @@ export const AuthContextProvider = (props) => {
       }
     });
   };
+
+  //useEffect를 통해 토큰이 없어지면 자동 로그아웃, 무한루프를 막기위해 useCallback으로 감쌈
   const logoutHandler = useCallback(() => {
     setToken("");
     authAction.logoutActionHandler();
@@ -64,6 +75,8 @@ export const AuthContextProvider = (props) => {
       clearTimeout(logoutTimer);
     }
   }, []);
+
+  //토큰값을 넣어주고 promist객체인 data를 받아 UserObj에 셋
   const getUserHandler = () => {
     setIsGetSuccess(false);
     const data = authAction.getUserActionHandler(token);
@@ -101,6 +114,8 @@ export const AuthContextProvider = (props) => {
       }
     });
   };
+
+  //만료시간후 logoutHandler실행 - retrieveStoredToken로 받은 token값과, logoutHandler를 종속변수로 삼는 useEffect훅
   useEffect(() => {
     if (tokenData) {
       console.log(tokenData.duration);

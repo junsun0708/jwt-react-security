@@ -1,0 +1,115 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+.contentWrapper {
+  width: 100%;
+  height: 100vh;
+  background: url('../assets/images/tisp_background.jpg') left bottom no-repeat #232323;
+  background-size: contain;
+}
+
+.login_error {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.loginBG {
+  border: solid 2px #33caf1;
+  min-width: 640px;
+  min-height: 480px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 50px;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
+.loginBG .titleName {
+  font-size: 38px;
+  text-align: center;
+  width: 100%;
+  color: #33caf1;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.loginBG input[type=email] {
+  border: solid 1px gray;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.loginBG input[type=password] {
+  border: solid 1px gray;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.textInput {
+  border: solid 1px gray;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.loginBG .loginBtn a {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  background: #33caf1;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 5px;
+  line-height: 50px;
+  color: #ffff;
+  margin-top: 50px;
+}
+
+.loginBG .loginBtn a:hover {
+  background: #1a86a1;
+}
+
+.loginBG .other {
+  border: solid 0px red;
+  text-align: center;
+  font-size: 18px;
+}
+
+.loginBG .other a {
+  margin: 20px 30px;
+  color: #fff;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.loginBG .other a:hover {
+  color: #33caf1
+}
+
+.loginBG .copyrightLine {
+  width: 100%;
+  color: silver;
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  margin: 30px 0 0 0;
+}

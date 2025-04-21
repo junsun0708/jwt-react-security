@@ -1,0 +1,9 @@
+.alertDialog {
+    display: inline-block;
+}
+
+.button {
+    width: 230px;
+    color: white;
+    font-size: 15pt;
+}
